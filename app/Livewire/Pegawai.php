@@ -91,6 +91,17 @@ class Pegawai extends Component
         $this->employee_id = '';
     }
 
+    public function delete(){
+        $id = $this->employee_id; //gunakan cara ini untuk menampung parameter $id & bisa digunakan dimanapun (public)
+        ModelsPegawai::find($id)->delete();
+        session()->flash('message','Data berhasil di hapus');
+        $this->clear();
+    }
+
+    public function delete_confirmation($id){
+        $this->employee_id = $id;
+    }
+
     public function render()
     {
         $dataPegawai = ModelsPegawai::orderBy('nama','asc')->paginate(5);
