@@ -22,6 +22,8 @@ class Pegawai extends Component
     public $alamat;
     public $updateData =false;
     public $employee_id;
+    // untuk searching
+    public $katakunci;
 
 
     public function store(){
@@ -104,7 +106,15 @@ class Pegawai extends Component
 
     public function render()
     {
-        $dataPegawai = ModelsPegawai::orderBy('nama','asc')->paginate(5);
+        if($this->katakunci != null){
+            $dataPegawai = ModelsPegawai::where('nama','like','%' . $this->katakunci . '%')
+            ->orWhere('email','like','%' . $this->katakunci . '%')
+            ->orWhere('alamat','like','%' . $this->katakunci . '%')
+            ->orderBy('nama','asc')->paginate(5);
+        }else{
+            $dataPegawai = ModelsPegawai::where('nama','like','%' . $this->katakunci . '%')->orderBy('nama','asc')->paginate(5);
+        }
+
         return view('livewire.pegawai', compact('dataPegawai'));
     }
 }
