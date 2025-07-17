@@ -20,6 +20,9 @@ class Pegawai extends Component
     public $nama;
     public $email;
     public $alamat;
+    public $updateData =false;
+    public $employee_id;
+
 
     public function store(){
         // $this->nama = 'Mr. ' . $this->nama;
@@ -43,7 +46,51 @@ class Pegawai extends Component
         ModelsPegawai::create($validated);
         session()->flash('message','Data berhasil disimpan');
 
+        $this->clear();
+
     }
+
+    public function edit($id){
+        $data = ModelsPegawai::find($id);
+        $this->nama = $data->nama;
+        $this->email = $data->email;
+        $this->alamat = $data->alamat;
+
+        $this->updateData =true;
+        $this->employee_id = $id;
+    }
+
+    public function update(){
+        $rules =[
+            'nama' => "required",
+            'email' => "required|email",
+            'alamat' => "required",
+        ];
+
+        $pesan =[
+            'nama.required'=>'Nama wajib diisi',
+            'email.required'=>'Email wajib diisi',
+            'email.email'=>'Format Email tidak sesuai',
+            'alamat.required'=>'Alamat wajib diisi',
+        ];
+
+        $validated = $this->validate($rules,$pesan);
+        $data = ModelsPegawai::find($this->employee_id);
+        $data->update($validated);
+        session()->flash('message','Data berhasil di update');
+
+        $this->clear();
+
+    }
+
+    public function clear(){
+        $this->nama = '';
+        $this->email = '';
+        $this->alamat = '';
+        $this->updateData =false;
+        $this->employee_id = '';
+    }
+
     public function render()
     {
         $dataPegawai = ModelsPegawai::orderBy('nama','asc')->paginate(5);
