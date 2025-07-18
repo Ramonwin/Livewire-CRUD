@@ -8,22 +8,22 @@ use Livewire\WithPagination;
 
 class Pegawai extends Component
 {
-    //! cara langsung menampilakn data
+     //! bisa pake cara ini untuk mengeluarkan datanya langsung ke textbox
     // public $nama = 'Ramon';
     // public $email = 'ramon@gmail.com';
     // public $alamat = 'Bandung';
     //=============================
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
-    
+
 
     public $nama;
     public $email;
     public $alamat;
     public $updateData =false;
     public $employee_id;
-    // untuk searching
-    public $katakunci;
+    public $katakunci; // untuk searching
+    public $employee_selected_id =[];// bulk delete checkbox
 
 
     public function store(){
@@ -91,17 +91,28 @@ class Pegawai extends Component
         $this->alamat = '';
         $this->updateData =false;
         $this->employee_id = '';
+        $this->employee_selected_id = [];
     }
 
     public function delete(){
-        $id = $this->employee_id; //gunakan cara ini untuk menampung parameter $id & bisa digunakan dimanapun (public)
-        ModelsPegawai::find($id)->delete();
-        session()->flash('message','Data berhasil di hapus');
-        $this->clear();
+
+        if($this->employee_id != ''){
+            $id = $this->employee_id; //gunakan cara ini untuk menampung parameter $id & bisa digunakan dimanapun (public)
+            ModelsPegawai::find($id)->delete();
+        }
+        if(count($this->employee_selected_id)){
+            for($x=0; $x<count($this->employee_selected_id);$x++){
+                ModelsPegawai::find($this->employee_selected_id[$x])->delete();
+            }
+        }
+            session()->flash('message','Data berhasil di hapus');
+            $this->clear();
     }
 
     public function delete_confirmation($id){
-        $this->employee_id = $id;
+        if($id != ''){
+            $this->employee_id = $id;
+        }
     }
 
     public function render()
