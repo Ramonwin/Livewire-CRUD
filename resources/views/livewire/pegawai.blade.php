@@ -12,7 +12,7 @@
     @endif
 
     @if (session()->has('message'))
-    <div class="pt-2">
+    <div class="pt-3">
         <div class="alert alert-success">
             {{ session('message') }}
         </div>
