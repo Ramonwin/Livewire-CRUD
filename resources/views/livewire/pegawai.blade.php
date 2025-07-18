@@ -68,6 +68,7 @@
            <table class="table table-striped">
                <thead>
                    <tr>
+                       <th></th>
                        <th class="col-md-1">No</th>
                        <th class="col-md-4">Nama</th>
                        <th class="col-md-3">Email</th>
@@ -78,6 +79,7 @@
                <tbody>
                    @foreach ($dataPegawai as $key => $item)
                        <tr>
+                           <td><input type="checkbox" value="{{ $item->id }}"></td>
                            <td>{{ $dataPegawai->firstItem() + $key }}</td>
                            <td>{{ $item->nama }}</td>
                            <td>{{ $item->email }}</td>
