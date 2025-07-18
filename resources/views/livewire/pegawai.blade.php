@@ -64,6 +64,16 @@
                 <input type="text" class="form-control mb-3 w-25" placeholder="Searching..."
                     wire:model.live="katakunci">
             </div>
+
+            @if ($employee_selected_id)
+            {{-- @php
+            print_r($employee_selected_id); // cek apakah id yg dipilih ada
+            @endphp --}}
+
+            <a wire:click="delete_confirmation('')" class="btn btn-danger btn-sm mb-3" data-bs-toggle="modal"
+                data-bs-target="#exampleModal">Delete {{ count($employee_selected_id) }} data</a>
+
+            @endif
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -78,7 +88,9 @@
                 <tbody>
                     @foreach ($dataPegawai as $key => $item)
                     <tr>
-                        <td><input type="checkbox" value="{{ $item->id }}"></td>
+                        <td><input type="checkbox" value="{{ $item->id }}" wire:key="{{ $item->id }}"
+                                wire:model.live="employee_selected_id">
+                        </td>
                         <td>{{ $dataPegawai->firstItem() + $key }}</td>
                         <td>{{ $item->nama }}</td>
                         <td>{{ $item->email }}</td>
